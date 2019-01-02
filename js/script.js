@@ -294,7 +294,9 @@ var TrashModel = function(_lable, _cell, remarks, transferdata) {
       return 0;
     })
     //直近の日付を更新
-    var now = new Date();
+    //var now = new Date();
+    var ndate = new Date();
+    var now = new Date(ndate.getFullYear(),ndate.getMonth(), ndate.getDate());
 
     // ◇ 
     this.bikohyoji = "";
