@@ -180,6 +180,7 @@ var TrashModel = function(_lable, _cell, remarks, transferdata) {
     };
     return -1;
   }
+	
   /**
    * このごみ収集日が特殊な条件を持っている場合備考を返します。収集日データに"*n" が入っている場合に利用されます
    */
