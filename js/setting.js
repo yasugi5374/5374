@@ -11,3 +11,4 @@ var WeekShiftA = true; // 休止期間なら週をずらすときは、true。�
 var WeekShiftB = true;  // 休止期間なら週をずらすときは、true。Ｂ地区
 
 var SkipSuspend = true; // 休止期間を除去するときは、true。奈良の仕様は、true。
+
