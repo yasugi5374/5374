@@ -36,22 +36,26 @@ var AreaModel = function() {
     if (this.startDate.length > 0) {
 
         for (var i in this.startDate) {
-
+        
+            var ima = currentDate.getFullYear() + "/" + (currentDate.getMonth() + 1) + "/" + currentDate.getDate();
+            
             if (this.startDate[i].getTime() <= currentDate.getTime() &&
               currentDate.getTime() <= this.endDate[i].getTime()) {
-
+              
               return true;
             }
         }
     }
 
-    // 固定期間チェック　休止終了日は開始日の次の年
-    var endYear = startKDate.getFullYear() + 1;
-    var endKDate = new Date(endYear, (cblankEndMM - 1), cblankEndDD);
+    if (startKDate != false) {
+        // 固定期間チェック　休止終了日は開始日の次の年
+        var endYear = startKDate.getFullYear() + 1;
+        var endKDate = new Date(endYear, (cblankEndMM - 1), cblankEndDD);
 
-    if (startKDate.getTime() <= currentDate.getTime() &&
-      currentDate.getTime() <= endKDate.getTime()) {
-      return true;
+        if (startKDate.getTime() <= currentDate.getTime() &&
+          currentDate.getTime() <= endKDate.getTime()) {
+          return true;
+        }
     }
 
     return false;
@@ -120,7 +124,7 @@ var TrashModel = function(_lable, _cell, remarks, transferdata) {
 
   var result_text = "";
   var today = new Date();
-
+  
   for (var j in this.dayCell) {
     if (this.dayCell[j].length == 1) {
       result_text += "毎週" + this.dayCell[j] + "曜日 ";
@@ -234,25 +238,47 @@ var TrashModel = function(_lable, _cell, remarks, transferdata) {
             );
             //年末年始のずらしの対応
             //休止期間なら、今後の日程を１週間ずらす
+            
+            if (KoteiKN) {
 
-            // 固定の休止期間
-            // １月１日～終了日 は休止開始年を昨年にする
-            if (date.getMonth() == (cblankEndMM - 1) && date.getDate() <= cblankEndDD)  {
+                // 固定の休止期間
+                // １月１日～終了日 は休止開始年を昨年にする
+                if (date.getMonth() == (cblankEndMM - 1) && date.getDate() <= cblankEndDD)  {
 
-                var ky = (date.getFullYear()) - 1;
+                    var ky = (date.getFullYear()) - 1;
+                } else {
+
+                    var ky = date.getFullYear();
+                }
+                var s = new Date(ky, (cblankStartMM -1), cblankStartDD);
+            
             } else {
-
-                var ky = date.getFullYear();
+                var s = false;
             }
 
-            var s = new Date(ky, (cblankStartMM -1), cblankStartDD);
-
             if (areaObj.isBlankDay(d,s)) {
-              if (WeekShift) {
-                isShift = true;
-              } else {
-                continue;
-              }
+                var cn = areaObj.centerName;
+
+                // ◆◆◆
+                if (cn == "A") {
+                    if (WeekShiftA) {
+                        isShift = true;
+                    } else {
+                        continue;
+                    }
+                } else {
+                     if (WeekShiftB) {
+                        isShift = true;
+                    } else {
+                        continue;
+                    }
+                }
+
+              // ◆◆◆if (WeekShift) {
+              // ◆◆◆  isShift = true;
+              // ◆◆◆} else {
+              // ◆◆◆  continue;
+              // ◆◆◆}
             }
             if (isShift) {
               d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000);
